@@ -16,7 +16,7 @@ type CustomModel struct {
 
 type Post struct {
 	CustomModel
-	gorm.Model
+	UserID uint   `gorm:"user_id" json:"userId"`
 	Title  string `json:"title"`
 	Body   string `json:"body"`
 	Likes  int    `json:"likes"`

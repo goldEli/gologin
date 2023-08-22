@@ -11,6 +11,7 @@ import (
 // CreatePost
 func CreatePost(ctx *gin.Context) {
 	var body struct {
+		UserID uint `json:"user_id"`
 		Title  string
 		Body   string
 		Likes  int
@@ -19,12 +20,21 @@ func CreatePost(ctx *gin.Context) {
 	}
 	ctx.BindJSON(&body)
 
+	// Get the user from the context
+	user, exists := ctx.Get("user")
+	if !exists {
+		ctx.JSON(500, gin.H{"error": "user not found"})
+		return
+	}
+	body.UserID = user.(models.User).ID
+
 	post := models.Post{
 		Title:  body.Title,
 		Body:   body.Body,
 		Likes:  body.Likes,
 		Draft:  body.Draft,
 		Author: body.Author,
+		UserID: body.UserID,
 	}
 
 	fmt.Println(post)

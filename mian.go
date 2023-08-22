@@ -3,6 +3,7 @@ package main
 import (
 	"gologin/controllers"
 	"gologin/inits"
+	"gologin/middlewares"
 
 	"github.com/gin-gonic/gin"
 )
@@ -21,6 +22,10 @@ func main() {
 	r.GET("/:id", controllers.GetPost)
 	r.PUT("/:id", controllers.UpdatePost)
 	r.DELETE("/:id", controllers.DeletePost)
+
+	r.POST("user", middlewares.RequireAuth, controllers.Validate)
+	r.POST("/users", controllers.Signup)
+	r.POST("/users/login", controllers.Login)
 
 	r.Run()
 }
