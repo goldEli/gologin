@@ -1,12 +1,25 @@
 package models
 
-import "gorm.io/gorm"
+import (
+	"time"
+
+	"gorm.io/gorm"
+)
+
+// 自定义一个匿名结构体，用于自定义字段的标签
+type CustomModel struct {
+	ID        uint           `gorm:"primarykey" json:"id"`
+	CreatedAt time.Time      `json:"createdAt"`
+	UpdatedAt time.Time      `json:"updatedAt"`
+	DeletedAt gorm.DeletedAt `gorm:"index" json:"deleteAt"`
+}
 
 type Post struct {
+	CustomModel
 	gorm.Model
 	Title  string `json:"title"`
-	Body   string
-	Likes  string
-	Draft  string
-	Author string
+	Body   string `json:"body"`
+	Likes  int    `json:"likes"`
+	Draft  bool   `json:"draft"`
+	Author string `json:"author"`
 }
