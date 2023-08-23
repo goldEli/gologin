@@ -52,3 +52,11 @@ Next, you'll need to run the ComplileDaemon command so that the project builds a
 ```
 CompileDaemon -command="./gologin"
 ```
+
+### build
+
+区分环境
+
+```shell
+ENV=prod go build main.go
+```

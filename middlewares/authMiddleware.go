@@ -2,10 +2,10 @@ package middlewares
 
 import (
 	"fmt"
+	"gologin/config"
 	"gologin/inits"
 	"gologin/models"
 	"net/http"
-	"os"
 	"time"
 
 	"github.com/gin-gonic/gin"
@@ -25,7 +25,7 @@ func RequireAuth(ctx *gin.Context) {
 			return nil, fmt.Errorf("Unexpected signing method: %v", token.Header["alg"])
 		}
 
-		return []byte(os.Getenv("SECRET")), nil
+		return []byte(config.Env.SECRET), nil
 	})
 
 	if claims, ok := token.Claims.(jwt.MapClaims); ok && token.Valid {

@@ -1,7 +1,9 @@
 package main
 
 import (
+	"gologin/config"
 	"gologin/inits"
+	"gologin/migrations"
 	"gologin/router"
 )
 
@@ -12,7 +14,8 @@ func init() {
 }
 
 func main() {
+	config.GetConfig()
 
+	migrations.CreateTable()
 	router.Router()
-
 }

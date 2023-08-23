@@ -1,16 +1,14 @@
-package main
+package migrations
 
 import (
 	"gologin/inits"
 	"gologin/models"
+	"log"
 )
 
-func init() {
-	inits.LoadEnv()
-	inits.DBInit()
-}
-
-func main() {
-	inits.DB.AutoMigrate(&models.Post{})
-	inits.DB.AutoMigrate(&models.User{})
+func CreateTable() {
+	err := inits.DB.AutoMigrate(&models.Post{}, &models.User{})
+	if err != nil {
+		log.Fatal(err)
+	}
 }

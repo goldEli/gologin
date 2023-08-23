@@ -1,0 +1,13 @@
+mysql:
+  host: localhost
+  port: 3306
+  database: user-sys
+  username: root
+  password: guang
+
+redis:
+  host: localhost
+  port: 6379
+
+PORT: 5000
+SECRET: FGNMfvbnmVBNM23456789$%^&*(*&^%$%^&*&^%$%^&^%$%^&^%$#)

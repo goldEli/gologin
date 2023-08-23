@@ -1,10 +1,10 @@
 package controllers
 
 import (
+	"gologin/config"
 	"gologin/inits"
 	"gologin/models"
 	"net/http"
-	"os"
 	"time"
 
 	"github.com/gin-gonic/gin"
@@ -78,7 +78,7 @@ func Login(ctx *gin.Context) {
 		"exp": time.Now().Add(time.Hour * 24 * 30).Unix(),
 	})
 
-	tokenString, err := token.SignedString([]byte(os.Getenv("SECRET")))
+	tokenString, err := token.SignedString([]byte(config.Env.SECRET))
 
 	if err != nil {
 		ctx.JSON(500, gin.H{"error": "error signing token"})
