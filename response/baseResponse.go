@@ -38,6 +38,14 @@ func ResponseUserPasswordError() *BaseResponse {
 	}
 }
 
+func ResponseUnauthorizedError() *BaseResponse {
+	return &BaseResponse{
+		Code:    ResponseCodeUnauthorized,
+		Message: ResponseMessage(ResponseCodeUnauthorized),
+		Data:    nil,
+	}
+}
+
 func ResponseServerError() *BaseResponse {
 	return &BaseResponse{
 		Code:    ResponseCodeInternalServerError,
