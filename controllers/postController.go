@@ -4,6 +4,8 @@ import (
 	"fmt"
 	"gologin/inits"
 	"gologin/models"
+	"gologin/response"
+	"net/http"
 
 	"github.com/gin-gonic/gin"
 )
@@ -40,10 +42,10 @@ func CreatePost(ctx *gin.Context) {
 	fmt.Println(post)
 	result := inits.DB.Create(&post)
 	if result.Error != nil {
-		ctx.JSON(500, gin.H{"error": result.Error})
+		ctx.JSON(http.StatusInternalServerError, response.ResponseServerError())
 		return
 	}
-	ctx.JSON(200, gin.H{"data": post})
+	ctx.JSON(http.StatusOK, response.ResponseOkWIthData(post))
 }
 
 // UpdatePost

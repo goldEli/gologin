@@ -50,5 +50,5 @@ func main() {
 Next, you'll need to run the ComplileDaemon command so that the project builds automatically every time you save a file:
 
 ```
-CompileDaemon -command="./goblogart"
+CompileDaemon -command="./gologin"
 ```
