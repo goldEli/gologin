@@ -1,7 +1,7 @@
 package response
 
 type BaseResponse struct {
-	Code    int         `json:"errorCode"`
+	Code    int         `json:"code"`
 	Message string      `json:"message"`
 	Data    interface{} `json:"data"`
 }
@@ -26,6 +26,14 @@ func ResponseError() *BaseResponse {
 	return &BaseResponse{
 		Code:    ResponseCodeBadRequest,
 		Message: ResponseMessage(ResponseCodeBadRequest),
+		Data:    nil,
+	}
+}
+
+func ResponseUserPasswordError() *BaseResponse {
+	return &BaseResponse{
+		Code:    ResponseCodeUserPasswordError,
+		Message: ResponseMessage(ResponseCodeUserPasswordError),
 		Data:    nil,
 	}
 }

@@ -25,7 +25,7 @@ func CreatePost(ctx *gin.Context) {
 	// Get the user from the context
 	user, exists := ctx.Get("user")
 	if !exists {
-		ctx.JSON(500, gin.H{"error": "user not found"})
+		ctx.JSON(http.StatusBadRequest, response.ResponseUserPasswordError())
 		return
 	}
 	body.UserID = user.(models.User).ID
@@ -64,12 +64,12 @@ func UpdatePost(ctx *gin.Context) {
 
 	result := inits.DB.First(&post, ctx.Param("id"))
 	if result.Error != nil {
-		ctx.JSON(500, gin.H{"error": result.Error})
+		ctx.JSON(http.StatusInternalServerError, response.ResponseServerError())
 		return
 	}
 	inits.DB.Model(&post).Updates(models.Post{Title: body.Title, Body: body.Body, Likes: body.Likes, Draft: body.Draft, Author: body.Author})
 
-	ctx.JSON(200, gin.H{"data": post})
+	ctx.JSON(http.StatusOK, response.ResponseOkWIthData(post))
 }
 
 // DeletePost
@@ -77,7 +77,7 @@ func DeletePost(ctx *gin.Context) {
 	id := ctx.Param("id")
 	inits.DB.Delete(&models.Post{}, id)
 
-	ctx.JSON(200, gin.H{"data": "post has been deleted successfully"})
+	ctx.JSON(http.StatusOK, response.ResponseOk())
 }
 
 // GetPost
@@ -85,10 +85,10 @@ func GetPost(ctx *gin.Context) {
 	var post models.Post
 	result := inits.DB.First(&post, ctx.Param("id"))
 	if result.Error != nil {
-		ctx.JSON(500, gin.H{"error": result.Error})
+		ctx.JSON(http.StatusInternalServerError, response.ResponseServerError())
 		return
 	}
-	ctx.JSON(200, gin.H{"data": post})
+	ctx.JSON(http.StatusOK, response.ResponseOkWIthData(post))
 }
 
 // GetPosts
@@ -96,8 +96,8 @@ func GetPosts(ctx *gin.Context) {
 	var posts []models.Post
 	result := inits.DB.Find(&posts)
 	if result.Error != nil {
-		ctx.JSON(500, gin.H{"error": result.Error})
+		ctx.JSON(http.StatusInternalServerError, response.ResponseServerError())
 		return
 	}
-	ctx.JSON(200, gin.H{"data": posts})
+	ctx.JSON(http.StatusOK, response.ResponseOkWIthData(posts))
 }

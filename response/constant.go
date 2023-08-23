@@ -4,7 +4,7 @@ const (
 	ResponseCodeOk                  = 10000
 	ResponseCodeUnauthorized        = 20000
 	ResponseCodeForbidden           = 20001
-	ResponseCodePasswordError       = 20002
+	ResponseCodeUserPasswordError   = 20002
 	ResponseCodeBadRequest          = 20003
 	ResponseResourceError           = 20004
 	ResponseCodeInternalServerError = 30000
