@@ -60,3 +60,9 @@ CompileDaemon -command="./gologin"
 ```shell
 ENV=prod go build main.go
 ```
+
+### TODO
+
+* token redis
+* 参数校验
+* 文档
