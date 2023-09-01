@@ -27,6 +27,13 @@ func (this *User) FindByEmail() (*User, error) {
 	return &user, result.Error
 }
 
+func (this *User) FindByEmailAndPassword() (*User, error) {
+	var user User
+	result := inits.DB.Where("email = ? AND password = ?", this.Email, this.Password).First(&user)
+
+	return &user, result.Error
+}
+
 func (this *User) Find() (*User, error) {
 	var user User
 	result := inits.DB.Find(this)

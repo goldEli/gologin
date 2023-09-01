@@ -2,9 +2,9 @@ package controllers
 
 import (
 	"gologin/dto"
-	"gologin/models"
 	"gologin/response"
 	"gologin/service"
+	"gologin/vo"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -24,28 +24,25 @@ func Register(ctx *gin.Context) {
 
 	err := service.Register(body.Name, body.Email, body.Password)
 	if err != nil {
-		ctx.JSON(http.StatusBadRequest, response.ResponseError())
+		ctx.JSON(http.StatusBadRequest, response.ResponseCodeInternalServerError)
 	}
 
-	ctx.JSON(http.StatusOK, response.ResponseOk())
+	ctx.JSON(http.StatusOK, response.ResponseNoData(response.ResponseCodeOk))
 }
 
 func Login(ctx *gin.Context) {
 
-	var user struct {
-		Email    string `json:"email"`
-		Password string `json:"password"`
-	}
+	user := &vo.LoginVo{}
 
-	if ctx.BindJSON(&user) != nil {
+	if ctx.BindJSON(user) != nil {
 		ctx.JSON(400, gin.H{"error": "Bad Request"})
 		return
 	}
 
-	tokenString, err := service.Login(&models.User{Email: user.Email, Password: user.Password})
+	tokenString, code := service.Login(user.Email, user.Password)
 
-	if err != nil {
-		ctx.JSON(500, gin.H{"error": "error signing token"})
+	if code != response.ResponseCodeOk {
+		ctx.JSON(500, response.ResponseNoData(code))
 		return
 	}
 
@@ -54,7 +51,7 @@ func Login(ctx *gin.Context) {
 		Email: user.Email,
 	}
 
-	ctx.JSON(http.StatusOK, response.ResponseOkWIthData(dto))
+	ctx.JSON(http.StatusOK, response.ResponseWIthData(response.ResponseCodeOk, dto))
 
 }
 

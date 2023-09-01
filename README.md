@@ -67,3 +67,4 @@ ENV=prod go build main.go
 * 参数校验
 * 文档
 * 日志 log
+* 封装返回

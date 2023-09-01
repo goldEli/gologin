@@ -53,3 +53,19 @@ func ResponseServerError() *BaseResponse {
 		Data:    nil,
 	}
 }
+
+func ResponseNoData(code int) *BaseResponse {
+	return &BaseResponse{
+		Code:    code,
+		Message: ResponseMessage(code),
+		Data:    nil,
+	}
+}
+
+func ResponseWIthData(code int, data interface{}) *BaseResponse {
+	return &BaseResponse{
+		Code:    code,
+		Message: ResponseMessage(code),
+		Data:    data,
+	}
+}
