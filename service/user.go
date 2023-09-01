@@ -8,7 +8,6 @@ import (
 	"time"
 
 	"github.com/golang-jwt/jwt/v5"
-	"github.com/sirupsen/logrus"
 )
 
 // 注册
@@ -28,8 +27,7 @@ func Register(name, email, password string) error {
 
 // 登陆
 func Login(user *models.User) (string, error) {
-	current, err := user.FindByEmail()
-	logrus.Error("login")
+	current, err := user.Find()
 
 	if err != nil {
 		return "", err
@@ -40,7 +38,6 @@ func Login(user *models.User) (string, error) {
 		"id":  current.ID,
 		"exp": time.Now().Add(time.Hour * 24 * 30).Unix(),
 	})
-	logrus.Info("token", token)
 	tokenString, err := token.SignedString([]byte(config.Env.SECRET))
 
 	return tokenString, err

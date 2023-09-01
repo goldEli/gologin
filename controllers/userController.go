@@ -8,7 +8,6 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
-	"github.com/sirupsen/logrus"
 )
 
 func Register(ctx *gin.Context) {
@@ -33,14 +32,17 @@ func Register(ctx *gin.Context) {
 
 func Login(ctx *gin.Context) {
 
-	var user *models.User
-	logrus.Info("login")
-	if ctx.BindJSON(user) != nil {
+	var user struct {
+		Email    string `json:"email"`
+		Password string `json:"password"`
+	}
+
+	if ctx.BindJSON(&user) != nil {
 		ctx.JSON(400, gin.H{"error": "Bad Request"})
 		return
 	}
 
-	tokenString, err := service.Login(user)
+	tokenString, err := service.Login(&models.User{Email: user.Email, Password: user.Password})
 
 	if err != nil {
 		ctx.JSON(500, gin.H{"error": "error signing token"})

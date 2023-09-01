@@ -22,14 +22,14 @@ func (this *User) Create() error {
 
 func (this *User) FindByEmail() (*User, error) {
 	var user User
-	result := inits.DB.Where("email = ?", this.Email).First(&user)
+	result := inits.DB.Find(this, "email = ?", this.Email)
 
 	return &user, result.Error
 }
 
-func (this *User) FindByName() (*User, error) {
+func (this *User) Find() (*User, error) {
 	var user User
-	result := inits.DB.Where("name = ?", this.Name).First(&user)
+	result := inits.DB.Find(this)
 
 	return &user, result.Error
 }
