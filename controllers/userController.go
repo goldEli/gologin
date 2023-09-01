@@ -48,7 +48,7 @@ func Login(ctx *gin.Context) {
 	if err1 != nil {
 
 		logrus.Error(err1)
-		ctx.JSON(http.StatusOK, gin.H{"msg": err1})
+		ctx.JSON(http.StatusOK, gin.H{"msg": err1.Error()})
 		return
 	}
 
