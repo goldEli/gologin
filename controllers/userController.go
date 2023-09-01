@@ -8,6 +8,8 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
+	"github.com/go-playground/validator/v10"
+	"github.com/sirupsen/logrus"
 )
 
 func Register(ctx *gin.Context) {
@@ -32,10 +34,21 @@ func Register(ctx *gin.Context) {
 
 func Login(ctx *gin.Context) {
 
-	user := &vo.LoginVo{}
+	var user vo.LoginVo
+	err := ctx.ShouldBindJSON(&user)
 
-	if ctx.BindJSON(user) != nil {
-		ctx.JSON(400, gin.H{"error": "Bad Request"})
+	if err != nil {
+		logrus.Error("register failed")
+		ctx.JSON(http.StatusOK, gin.H{"msg": err.Error()})
+		return
+	}
+
+	validate := validator.New()
+	err1 := validate.Struct(user)
+	if err1 != nil {
+
+		logrus.Error(err1)
+		ctx.JSON(http.StatusOK, gin.H{"msg": err1})
 		return
 	}
 
