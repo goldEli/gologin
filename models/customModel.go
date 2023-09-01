@@ -11,4 +11,6 @@ type CustomModel struct {
 	CreatedAt time.Time      `json:"createdAt"`
 	UpdatedAt time.Time      `json:"updatedAt"`
 	DeletedAt gorm.DeletedAt `gorm:"index" json:"deleteAt"`
+	DeletedOn uint32         `json:"deleted_on"`
+	IsDel     uint8          `json:"is_del"`
 }
