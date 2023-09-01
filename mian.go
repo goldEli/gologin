@@ -9,6 +9,7 @@ import (
 
 // this init function will be called automatically and cannot have any parameters
 func init() {
+	inits.InitLogrus()
 	inits.LoadEnv()
 	inits.DBInit()
 }

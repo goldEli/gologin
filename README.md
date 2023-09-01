@@ -66,3 +66,4 @@ ENV=prod go build main.go
 * token redis
 * 参数校验
 * 文档
+* 日志 log

@@ -82,6 +82,7 @@ func DeletePost(ctx *gin.Context) {
 
 // GetPost
 func GetPost(ctx *gin.Context) {
+	fmt.Println("GetPost")
 	var post models.Post
 	result := inits.DB.First(&post, ctx.Param("id"))
 	if result.Error != nil {

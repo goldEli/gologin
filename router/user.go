@@ -9,6 +9,6 @@ import (
 func User(r *gin.Engine) {
 	user := r.Group("/users")
 	user.POST("/validate", controllers.Validate)
-	user.POST("/register", controllers.Signup)
+	user.POST("/register", controllers.Register)
 	user.POST("/login", controllers.Login)
 }

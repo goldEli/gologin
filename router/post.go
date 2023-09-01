@@ -7,6 +7,7 @@ import (
 )
 
 func Post(r *gin.Engine) {
+
 	post := r.Group("/post")
 	post.POST("/", controllers.CreatePost)
 	post.GET("/", controllers.GetPosts)

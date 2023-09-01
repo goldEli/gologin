@@ -1,18 +1,17 @@
 package controllers
 
 import (
-	"gologin/config"
-	"gologin/inits"
+	"gologin/dto"
 	"gologin/models"
+	"gologin/response"
+	"gologin/service"
 	"net/http"
-	"time"
 
 	"github.com/gin-gonic/gin"
-	"github.com/golang-jwt/jwt/v5"
-	"golang.org/x/crypto/bcrypt"
+	"github.com/sirupsen/logrus"
 )
 
-func Signup(ctx *gin.Context) {
+func Register(ctx *gin.Context) {
 	var body struct {
 		Name     string
 		Email    string
@@ -24,71 +23,37 @@ func Signup(ctx *gin.Context) {
 		return
 	}
 
-	hash, err := bcrypt.GenerateFromPassword([]byte(body.Password), 10)
-
+	err := service.Register(body.Name, body.Email, body.Password)
 	if err != nil {
-		ctx.JSON(500, gin.H{"error": err})
-		return
+		ctx.JSON(http.StatusBadRequest, response.ResponseError())
 	}
 
-	user := models.User{
-		Name:     body.Name,
-		Email:    body.Email,
-		Password: string(hash),
-	}
-
-	result := inits.DB.Create(&user)
-
-	if result.Error != nil {
-		ctx.JSON(500, gin.H{"error": result.Error})
-		return
-	}
-	ctx.JSON(200, gin.H{"data": user})
+	ctx.JSON(http.StatusOK, response.ResponseOk())
 }
 
 func Login(ctx *gin.Context) {
-	var body struct {
-		Email    string
-		Password string
-	}
 
-	if ctx.BindJSON(&body) != nil {
+	var user *models.User
+	logrus.Info("login")
+	if ctx.BindJSON(user) != nil {
 		ctx.JSON(400, gin.H{"error": "Bad Request"})
 		return
 	}
 
-	var user models.User
-
-	result := inits.DB.Where("email = ?", body.Email).First(&user)
-
-	if result.Error != nil {
-		ctx.JSON(500, gin.H{"error": "user not found"})
-		return
-	}
-	err := bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(body.Password))
-
-	if err != nil {
-		ctx.JSON(401, gin.H{"error": "unauthorized"})
-		return
-	}
-
-	// generate jwt token
-	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
-		"id":  user.ID,
-		"exp": time.Now().Add(time.Hour * 24 * 30).Unix(),
-	})
-
-	tokenString, err := token.SignedString([]byte(config.Env.SECRET))
+	tokenString, err := service.Login(user)
 
 	if err != nil {
 		ctx.JSON(500, gin.H{"error": "error signing token"})
 		return
 	}
 
-	// Set the same-site mode to the default mode
-	ctx.SetSameSite(http.SameSiteDefaultMode)
-	ctx.SetCookie("Authorization", tokenString, 3600*24*30, "", "localhost", false, true)
-	ctx.JSON(200, gin.H{"data": "login success"})
+	dto := dto.LoginDto{
+		Jwt:   tokenString,
+		Email: user.Email,
+	}
+
+	ctx.JSON(http.StatusOK, response.ResponseOkWIthData(dto))
+
 }
 
 func Logout(ctx *gin.Context) {
