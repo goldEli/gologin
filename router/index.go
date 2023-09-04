@@ -37,10 +37,12 @@ func Router() {
 	// 设置跨域
 	// r.Use(middlewares.Cors())
 	r.Use(cors.Default())
+	r.Use(gin.Recovery())
 	r.Use(middlewares.LoggerToFile())
 
-	Post(r)
 	User(r)
+	// r.Use(middlewares.RequireAuth())
+	Post(r)
 
 	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 	r.Run()

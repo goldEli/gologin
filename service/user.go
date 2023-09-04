@@ -50,8 +50,8 @@ func Login(email, password string) (string, int) {
 	// 生成 jwt
 	// generate jwt token
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
-		"id":  user.ID,
-		"exp": time.Now().Add(time.Hour * 24 * 30).Unix(),
+		"email": user.Email,
+		"exp":   time.Now().Add(time.Hour * 24 * 30).Unix(),
 	})
 	tokenString, err := token.SignedString([]byte(config.Env.SECRET))
 	if err != nil {

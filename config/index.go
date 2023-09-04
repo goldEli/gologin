@@ -17,11 +17,17 @@ type Mysql struct {
 	Password string
 }
 
+type Redis struct {
+	Host string
+	Port int
+}
+
 type Config struct {
 	PORT     string
 	SECRET   string
 	Mysql    Mysql
 	MysqlUrl string
+	Redis    Redis
 }
 
 var Env *Config
@@ -54,5 +60,6 @@ func GetConfig() {
 		SECRET:   config.SECRET,
 		Mysql:    config.Mysql,
 		MysqlUrl: fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?charset=utf8mb4&parseTime=True&loc=Local", config.Mysql.Username, config.Mysql.Password, config.Mysql.Host, strconv.Itoa(config.Mysql.Port), config.Mysql.Database),
+		Redis:    config.Redis,
 	}
 }

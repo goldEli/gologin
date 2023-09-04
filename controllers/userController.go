@@ -2,13 +2,16 @@ package controllers
 
 import (
 	"gologin/dto"
+	"gologin/inits"
 	"gologin/response"
 	"gologin/service"
 	"gologin/utils"
 	"gologin/vo"
 	"net/http"
+	"time"
 
 	"github.com/gin-gonic/gin"
+	"github.com/sirupsen/logrus"
 )
 
 // @Summary 注册
@@ -61,6 +64,14 @@ func Login(ctx *gin.Context) {
 
 	if code != response.ResponseCodeOk {
 		response.FailWithCode(code, ctx)
+		return
+	}
+
+	// set token into redis
+	err := inits.RedisClient.Set(user.Email, tokenString, time.Hour).Err()
+	if err != nil {
+		logrus.Error(err)
+		response.FailServer(ctx)
 		return
 	}
 

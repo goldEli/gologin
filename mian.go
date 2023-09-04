@@ -9,13 +9,15 @@ import (
 
 // this init function will be called automatically and cannot have any parameters
 func init() {
+
+	config.GetConfig()
 	inits.InitLogrus()
 	inits.LoadEnv()
+	inits.RedisInit()
 	inits.DBInit()
 }
 
 func main() {
-	config.GetConfig()
 
 	migrations.CreateTable()
 	router.Router()
