@@ -37,8 +37,8 @@ func Login(ctx *gin.Context) {
 
 	ctx.ShouldBindJSON(&user)
 
-	if err := utils.Validate.Struct(user); err != nil {
-		response.FailWithMessage(utils.Translate(err), ctx)
+	if errMsg := utils.GetErrorMessage(user); errMsg != "" {
+		response.FailWithMessage(errMsg, ctx)
 		return
 	}
 
