@@ -4,12 +4,11 @@ import (
 	"gologin/dto"
 	"gologin/response"
 	"gologin/service"
+	"gologin/utils"
 	"gologin/vo"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
-	"github.com/go-playground/validator/v10"
-	"github.com/sirupsen/logrus"
 )
 
 func Register(ctx *gin.Context) {
@@ -35,27 +34,18 @@ func Register(ctx *gin.Context) {
 func Login(ctx *gin.Context) {
 
 	var user vo.LoginVo
-	err := ctx.ShouldBindJSON(&user)
 
-	if err != nil {
-		logrus.Error("register failed")
-		ctx.JSON(http.StatusOK, gin.H{"msg": err.Error()})
-		return
-	}
+	ctx.ShouldBindJSON(&user)
 
-	validate := validator.New()
-	err1 := validate.Struct(user)
-	if err1 != nil {
-
-		logrus.Error(err1)
-		ctx.JSON(http.StatusOK, gin.H{"msg": err1.Error()})
+	if err := utils.Validate.Struct(user); err != nil {
+		response.FailWithMessage(utils.Translate(err), ctx)
 		return
 	}
 
 	tokenString, code := service.Login(user.Email, user.Password)
 
 	if code != response.ResponseCodeOk {
-		ctx.JSON(500, response.ResponseNoData(code))
+		response.FailWithCode(code, ctx)
 		return
 	}
 
@@ -64,8 +54,7 @@ func Login(ctx *gin.Context) {
 		Email: user.Email,
 	}
 
-	ctx.JSON(http.StatusOK, response.ResponseWIthData(response.ResponseCodeOk, dto))
-
+	response.OkWithData(dto, ctx)
 }
 
 func Logout(ctx *gin.Context) {
@@ -73,14 +62,4 @@ func Logout(ctx *gin.Context) {
 	ctx.SetSameSite(http.SameSiteLaxMode)
 	ctx.SetCookie("Authorization", "", -1, "", "localhost", false, true)
 	ctx.JSON(200, gin.H{"data": "You are logged out!"})
-}
-
-func Validate(ctx *gin.Context) {
-	user, exists := ctx.Get("user")
-
-	if !exists {
-		ctx.JSON(500, gin.H{"error": "error"})
-		return
-	}
-	ctx.JSON(200, gin.H{"data": "You are logged in!", "user": user})
 }
