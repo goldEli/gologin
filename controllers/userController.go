@@ -11,24 +11,32 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+// @Summary 注册
+// @Description 账户注册
+// @Tags register
+// @Accept  json
+// @Produce json
+// @Param body body vo.RegisterVo true "用户注册"
+// @Success 200  {object}  object{code=number,message=string}
+// @Router /register [post]
 func Register(ctx *gin.Context) {
-	var body struct {
-		Name     string
-		Email    string
-		Password string
-	}
 
-	if ctx.BindJSON(&body) != nil {
-		ctx.JSON(400, gin.H{"error": "Bad Request"})
+	var data vo.RegisterVo
+
+	ctx.ShouldBindJSON(&data)
+
+	if errMsg := utils.GetErrorMessage(data); errMsg != "" {
+		response.FailWithMessage(errMsg, ctx)
 		return
 	}
 
-	err := service.Register(body.Name, body.Email, body.Password)
+	err := service.Register(data.Name, data.Email, data.Password)
 	if err != nil {
-		ctx.JSON(http.StatusBadRequest, response.ResponseCodeInternalServerError)
+		response.FailServer(ctx)
+		return
 	}
 
-	ctx.JSON(http.StatusOK, response.ResponseNoData(response.ResponseCodeOk))
+	response.Ok(ctx)
 }
 
 // @Summary 登录
@@ -37,10 +45,9 @@ func Register(ctx *gin.Context) {
 // @Accept  json
 // @Produce  json
 // @Param body body vo.LoginVo true "User login""
-// @Success 200  {object}  dto.LoginDto
+// @Success 200  {object}  object{data=dto.LoginDto,code=number,message=string}
 // @Router /login [post]
 func Login(ctx *gin.Context) {
-
 	var user vo.LoginVo
 
 	ctx.ShouldBindJSON(&user)

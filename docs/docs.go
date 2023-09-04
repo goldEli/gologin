@@ -9,6 +9,7 @@ const docTemplate = `{
     "info": {
         "description": "{{escape .Description}}",
         "title": "{{.Title}}",
+        "termsOfService": "https://github.com/go-programming-tour-book",
         "contact": {
             "name": "miaoyu",
             "url": "http://coolcat.io/support",
@@ -51,7 +52,60 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/dto.LoginDto"
+                            "type": "object",
+                            "properties": {
+                                "code": {
+                                    "type": "number"
+                                },
+                                "data": {
+                                    "$ref": "#/definitions/dto.LoginDto"
+                                },
+                                "message": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/register": {
+            "post": {
+                "description": "账户注册",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "register"
+                ],
+                "summary": "注册",
+                "parameters": [
+                    {
+                        "description": "用户注册",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/vo.RegisterVo"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "code": {
+                                    "type": "number"
+                                },
+                                "message": {
+                                    "type": "string"
+                                }
+                            }
                         }
                     }
                 }
@@ -84,6 +138,24 @@ const docTemplate = `{
                     "type": "string"
                 }
             }
+        },
+        "vo.RegisterVo": {
+            "type": "object",
+            "required": [
+                "email",
+                "password"
+            ],
+            "properties": {
+                "email": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "password": {
+                    "type": "string"
+                }
+            }
         }
     },
     "securityDefinitions": {
@@ -101,8 +173,8 @@ var SwaggerInfo = &swag.Spec{
 	Host:             "127.0.0.1:5000",
 	BasePath:         "/v1",
 	Schemes:          []string{},
-	Title:            "Apiserver API",
-	Description:      "This is a simple api server.",
+	Title:            "博客系统",
+	Description:      "test to",
 	InfoInstanceName: "swagger",
 	SwaggerTemplate:  docTemplate,
 	LeftDelim:        "{{",
