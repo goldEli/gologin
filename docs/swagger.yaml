@@ -1,4 +1,4 @@
-basePath: /v1
+basePath: /
 definitions:
   dto.LoginDto:
     properties:
@@ -6,6 +6,41 @@ definitions:
         type: string
       jwt:
         type: string
+    type: object
+  gorm.DeletedAt:
+    properties:
+      time:
+        type: string
+      valid:
+        description: Valid is true if Time is not NULL
+        type: boolean
+    type: object
+  models.Post:
+    properties:
+      author:
+        type: string
+      body:
+        type: string
+      createdAt:
+        type: string
+      deleteAt:
+        $ref: '#/definitions/gorm.DeletedAt'
+      deleted_on:
+        type: integer
+      draft:
+        type: boolean
+      id:
+        type: integer
+      is_del:
+        type: integer
+      likes:
+        type: integer
+      title:
+        type: string
+      updatedAt:
+        type: string
+      userId:
+        type: integer
     type: object
   vo.LoginVo:
     properties:
@@ -29,7 +64,7 @@ definitions:
     - email
     - password
     type: object
-host: 127.0.0.1:5000
+host: localhost:5000
 info:
   contact:
     email: miaoyu200@qq.com
@@ -43,7 +78,31 @@ info:
   title: 博客系统
   version: "1.0"
 paths:
-  /login:
+  /post:
+    get:
+      consumes:
+      - application/json
+      description: 获取所有博客
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            properties:
+              code:
+                type: number
+              data:
+                items:
+                  $ref: '#/definitions/models.Post'
+                type: array
+              message:
+                type: string
+            type: object
+      summary: 获取所有博客
+      tags:
+      - post
+  /users/login:
     post:
       consumes:
       - application/json
@@ -71,8 +130,8 @@ paths:
             type: object
       summary: 登录
       tags:
-      - login
-  /register:
+      - user
+  /users/register:
     post:
       consumes:
       - application/json
@@ -98,7 +157,7 @@ paths:
             type: object
       summary: 注册
       tags:
-      - register
+      - user
 securityDefinitions:
   ApiKeyAuth:
     in: header

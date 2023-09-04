@@ -15,10 +15,47 @@
         },
         "version": "1.0"
     },
-    "host": "127.0.0.1:5000",
-    "basePath": "/v1",
+    "host": "localhost:5000",
+    "basePath": "/",
     "paths": {
-        "/login": {
+        "/post": {
+            "get": {
+                "description": "获取所有博客",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "post"
+                ],
+                "summary": "获取所有博客",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "code": {
+                                    "type": "number"
+                                },
+                                "data": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/definitions/models.Post"
+                                    }
+                                },
+                                "message": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/users/login": {
             "post": {
                 "description": "登录账户, 获取 token",
                 "consumes": [
@@ -28,7 +65,7 @@
                     "application/json"
                 ],
                 "tags": [
-                    "login"
+                    "user"
                 ],
                 "summary": "登录",
                 "parameters": [
@@ -63,7 +100,7 @@
                 }
             }
         },
-        "/register": {
+        "/users/register": {
             "post": {
                 "description": "账户注册",
                 "consumes": [
@@ -73,7 +110,7 @@
                     "application/json"
                 ],
                 "tags": [
-                    "register"
+                    "user"
                 ],
                 "summary": "注册",
                 "parameters": [
@@ -115,6 +152,59 @@
                 },
                 "jwt": {
                     "type": "string"
+                }
+            }
+        },
+        "gorm.DeletedAt": {
+            "type": "object",
+            "properties": {
+                "time": {
+                    "type": "string"
+                },
+                "valid": {
+                    "description": "Valid is true if Time is not NULL",
+                    "type": "boolean"
+                }
+            }
+        },
+        "models.Post": {
+            "type": "object",
+            "properties": {
+                "author": {
+                    "type": "string"
+                },
+                "body": {
+                    "type": "string"
+                },
+                "createdAt": {
+                    "type": "string"
+                },
+                "deleteAt": {
+                    "$ref": "#/definitions/gorm.DeletedAt"
+                },
+                "deleted_on": {
+                    "type": "integer"
+                },
+                "draft": {
+                    "type": "boolean"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "is_del": {
+                    "type": "integer"
+                },
+                "likes": {
+                    "type": "integer"
+                },
+                "title": {
+                    "type": "string"
+                },
+                "updatedAt": {
+                    "type": "string"
+                },
+                "userId": {
+                    "type": "integer"
                 }
             }
         },

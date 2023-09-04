@@ -9,9 +9,9 @@ import (
 func Post(r *gin.Engine) {
 
 	post := r.Group("/post")
-	post.POST("/", controllers.CreatePost)
+	// post.POST("/", controllers.CreatePost)
 	post.GET("/", controllers.GetPosts)
-	post.GET("/:id", controllers.GetPost)
-	post.PUT("/:id", controllers.UpdatePost)
-	post.DELETE("/:id", controllers.DeletePost)
+	// post.GET("/:id", controllers.GetPost)
+	// post.PUT("/:id", controllers.UpdatePost)
+	// post.DELETE("/:id", controllers.DeletePost)
 }

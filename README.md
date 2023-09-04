@@ -68,6 +68,8 @@ go install github.com/swaggo/swag/cmd/swag@latest
 
 # 每次修改文档都需要执行
 swag init -g router/index.go
+# or 解决依赖问题
+swag init -g router/index.go --parseDependency --parseInternal
 
 # 访问 http://localhost:5000/swagger/index.html
 ```

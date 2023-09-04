@@ -13,12 +13,12 @@ import (
 
 // @Summary 注册
 // @Description 账户注册
-// @Tags register
+// @Tags user
 // @Accept  json
 // @Produce json
 // @Param body body vo.RegisterVo true "用户注册"
 // @Success 200  {object}  object{code=number,message=string}
-// @Router /register [post]
+// @Router /users/register [post]
 func Register(ctx *gin.Context) {
 
 	var data vo.RegisterVo
@@ -41,12 +41,12 @@ func Register(ctx *gin.Context) {
 
 // @Summary 登录
 // @Description 登录账户, 获取 token
-// @Tags login
+// @Tags user
 // @Accept  json
 // @Produce  json
 // @Param body body vo.LoginVo true "User login""
 // @Success 200  {object}  object{data=dto.LoginDto,code=number,message=string}
-// @Router /login [post]
+// @Router /users/login [post]
 func Login(ctx *gin.Context) {
 	var user vo.LoginVo
 

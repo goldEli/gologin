@@ -1,8 +1,7 @@
 package router
 
 import (
-	"gologin/middlewares"
-
+	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	swaggerFiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
@@ -24,8 +23,8 @@ import (
 // @license.name Apache 2.0
 // @license.url http://www.apache.org/licenses/LICENSE-2.0.html
 
-// @host 127.0.0.1:5000
-// @BasePath /v1
+// @host localhost:5000
+// @BasePath /
 
 // @securityDefinitions.apikey ApiKeyAuth
 // @in header
@@ -35,7 +34,8 @@ func Router() {
 	r := gin.Default()
 
 	// 设置跨域
-	r.Use(middlewares.Cors())
+	// r.Use(middlewares.Cors())
+	r.Use(cors.Default())
 
 	Post(r)
 	User(r)

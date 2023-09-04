@@ -24,7 +24,44 @@ const docTemplate = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
-        "/login": {
+        "/post": {
+            "get": {
+                "description": "获取所有博客",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "post"
+                ],
+                "summary": "获取所有博客",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "code": {
+                                    "type": "number"
+                                },
+                                "data": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/definitions/models.Post"
+                                    }
+                                },
+                                "message": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/users/login": {
             "post": {
                 "description": "登录账户, 获取 token",
                 "consumes": [
@@ -34,7 +71,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "login"
+                    "user"
                 ],
                 "summary": "登录",
                 "parameters": [
@@ -69,7 +106,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/register": {
+        "/users/register": {
             "post": {
                 "description": "账户注册",
                 "consumes": [
@@ -79,7 +116,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "register"
+                    "user"
                 ],
                 "summary": "注册",
                 "parameters": [
@@ -121,6 +158,59 @@ const docTemplate = `{
                 },
                 "jwt": {
                     "type": "string"
+                }
+            }
+        },
+        "gorm.DeletedAt": {
+            "type": "object",
+            "properties": {
+                "time": {
+                    "type": "string"
+                },
+                "valid": {
+                    "description": "Valid is true if Time is not NULL",
+                    "type": "boolean"
+                }
+            }
+        },
+        "models.Post": {
+            "type": "object",
+            "properties": {
+                "author": {
+                    "type": "string"
+                },
+                "body": {
+                    "type": "string"
+                },
+                "createdAt": {
+                    "type": "string"
+                },
+                "deleteAt": {
+                    "$ref": "#/definitions/gorm.DeletedAt"
+                },
+                "deleted_on": {
+                    "type": "integer"
+                },
+                "draft": {
+                    "type": "boolean"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "is_del": {
+                    "type": "integer"
+                },
+                "likes": {
+                    "type": "integer"
+                },
+                "title": {
+                    "type": "string"
+                },
+                "updatedAt": {
+                    "type": "string"
+                },
+                "userId": {
+                    "type": "integer"
                 }
             }
         },
@@ -170,8 +260,8 @@ const docTemplate = `{
 // SwaggerInfo holds exported Swagger Info so clients can modify it
 var SwaggerInfo = &swag.Spec{
 	Version:          "1.0",
-	Host:             "127.0.0.1:5000",
-	BasePath:         "/v1",
+	Host:             "localhost:5000",
+	BasePath:         "/",
 	Schemes:          []string{},
 	Title:            "博客系统",
 	Description:      "test to",
