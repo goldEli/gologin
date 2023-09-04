@@ -1,3 +1,4 @@
 gologin.exe
 gologin.exe~
 *.exe
+/logs
