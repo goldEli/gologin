@@ -31,6 +31,14 @@ func Register(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, response.ResponseNoData(response.ResponseCodeOk))
 }
 
+// @Summary 登录
+// @Description 登录账户, 获取 token
+// @Tags login
+// @Accept  json
+// @Produce  json
+// @Param body body vo.LoginVo true "User login""
+// @Success 200  {object}  dto.LoginDto
+// @Router /login [post]
 func Login(ctx *gin.Context) {
 
 	var user vo.LoginVo

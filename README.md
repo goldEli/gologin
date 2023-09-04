@@ -61,6 +61,18 @@ CompileDaemon -command="./gologin"
 ENV=prod go build main.go
 ```
 
+### doc
+
+```shell
+go install github.com/swaggo/swag/cmd/swag@latest
+
+# 每次修改文档都需要执行
+swag init -g router/index.go
+
+# 访问 http://localhost:5000/swagger/index.html
+```
+
+
 ### TODO
 
 * token redis
