@@ -12,6 +12,7 @@ var RedisClient *redis.Client
 
 func RedisInit() {
 	addr := fmt.Sprintf("%s:%d", config.Env.Redis.Host, config.Env.Redis.Port)
+	logrus.Info("redis", addr)
 
 	fmt.Println(123, addr)
 	RedisClient = redis.NewClient(&redis.Options{

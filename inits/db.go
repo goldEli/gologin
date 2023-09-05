@@ -1,8 +1,9 @@
 package inits
 
 import (
-	"os"
+	"gologin/config"
 
+	"github.com/sirupsen/logrus"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 )
@@ -10,8 +11,8 @@ import (
 var DB *gorm.DB
 
 func DBInit() {
-	dsn := os.Getenv("DB_URL")
-	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
+	logrus.Info(config.Env.MysqlUrl)
+	db, err := gorm.Open(mysql.Open(config.Env.MysqlUrl), &gorm.Config{})
 	if err != nil {
 		panic("failed to connect database")
 	}

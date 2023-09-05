@@ -3,22 +3,41 @@ FROM golang:latest as build
 ENV GOPROXY https://goproxy.io
 ENV GO111MODULE on
 
-WORKDIR /go/cache
+# 设置工作目录
+WORKDIR /app
 
-ADD go.mod .
-ADD go.sum .
+# 复制文件
+COPY . .
+
+# 下载项目所有依赖
 RUN go mod download
 
-WORKDIR /go/release
+# 构建可执行文件
+RUN ENV=prod go build -o main .
 
-ADD . .
-
-RUN GOOS=linux CGO_ENABLED=0 ENV=prod go build -ldflags="-s -w" -installsuffix cgo -o imcs-design-go main.go
-
-FROM scratch as prod
-
+# 暴露端口号
 EXPOSE 5000
 
-COPY --from=build /go/release/golang /
-COPY --from=build /go/release/application.yaml /
-CMD ["./imcs-design-go"]
+# 运行可执行文件
+CMD ["./main"]
+
+
+# WORKDIR /go/cache
+
+# ADD go.mod .
+# ADD go.sum .
+# RUN go mod download
+
+# WORKDIR /go/release
+
+# ADD . .
+
+# RUN GOOS=linux CGO_ENABLED=0 ENV=prod go build -ldflags="-s -w" -installsuffix cgo -o imcs-design-go main.go
+
+# FROM scratch as prod
+
+# EXPOSE 5000
+
+# COPY --from=build /go/release/golang /
+# COPY --from=build /go/release/application.yaml /
+# CMD ["./imcs-design-go"]

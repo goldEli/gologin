@@ -34,11 +34,13 @@ var Env *Config
 
 func GetConfig() {
 	env := os.Getenv("ENV")
+
+	fmt.Println("env:", env)
 	if env == "" {
 		env = "dev"
 	}
 	name := fmt.Sprintf("config.%s", env)
-	fmt.Println("configName", name)
+	fmt.Println("configName:", name)
 
 	// 初始化配置
 	viper.SetConfigName(name)
