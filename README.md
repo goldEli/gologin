@@ -79,8 +79,8 @@ swag init -g router/index.go --parseDependency --parseInternal
 ```shell
 docker compose up
 
-# remove
-docker compose down --volume
+# rebuild
+docker-compose up --build
 ```
 
 ### TODO
