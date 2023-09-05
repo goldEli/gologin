@@ -74,6 +74,14 @@ swag init -g router/index.go --parseDependency --parseInternal
 # 访问 http://localhost:5000/swagger/index.html
 ```
 
+### 部署
+
+```shell
+docker compose up
+
+# remove
+docker compose down --volume
+```
 
 ### TODO
 

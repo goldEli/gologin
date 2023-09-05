@@ -13,13 +13,16 @@ COPY . .
 RUN go mod download
 
 # 构建可执行文件
-RUN ENV=prod go build -o main .
+# RUN ENV=prod go build -o gologin .
+# windows
+ENV ENV=prod
+RUN go build -o gologin .
 
 # 暴露端口号
 EXPOSE 5000
 
 # 运行可执行文件
-CMD ["./main"]
+CMD ["./gologin"]
 
 
 # WORKDIR /go/cache

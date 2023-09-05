@@ -1,9 +1,9 @@
 version: '3'
 services:
-  go-web:
+  web1:
     build: 
       context: .
-      dockerfile: ./Dockerfile
+      dockerfile: Dockerfile
     ports:
       - "5000:5000"
     depends_on:
